@@ -1,0 +1,94 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface LoadingScreenProps {
+  onLoadingComplete: () => void;
+}
+
+export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+  const [currentText, setCurrentText] = useState('');
+  const fullText = 'YTYKM';
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      if (currentIndex < fullText.length) {
+        setCurrentText(fullText.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(interval);
+        // Wait for 2 seconds after text is complete before fading out
+        setTimeout(() => {
+          setIsComplete(true);
+          setTimeout(onLoadingComplete, 500);
+        }, 2000);
+      }
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [fullText, onLoadingComplete]);
+
+  return (
+    <AnimatePresence>
+      {!isComplete && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#000000',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Typography
+              variant="h1"
+              component={motion.div}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              sx={{
+                fontFamily: 'monospace',
+                fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+                fontWeight: 'bold',
+                letterSpacing: '0.5rem',
+                color: '#ffffff',
+              }}
+            >
+              {currentText}
+            </Typography>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 2, ease: 'easeInOut' }}
+              style={{
+                height: '2px',
+                backgroundColor: '#ff0000',
+                marginTop: '1rem',
+              }}
+            />
+          </Box>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+} 
