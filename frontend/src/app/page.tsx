@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Box, Container, Typography, Paper, useTheme, Avatar, Tab, Tabs, Chip, Button, IconButton } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Box, Container, Typography, Paper, useTheme, Avatar, Tab, Tabs, Chip, Button, IconButton, useMediaQuery } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
 import React, { UIEvent, WheelEvent } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -91,8 +91,68 @@ const projects = [
   },
 ];
 
+// Publications data
+const publications = [
+  {
+    title: "REACTING TO...: Understanding The Motivations, Participatory Culture, and Spectatorship Behind Reaction Videos",
+    venue: "Master's Thesis, Virginia Tech, 2025",
+    description:
+      "Have you ever listened to a new album, had a particular track stick with you and thought to yourself, 'I wonder who else is resonating with this like I am'? So, you proceed to look up reactions to that album with the hopes that someone else is reacting and giving the same amount, if not more, praise to that same track? Perhaps, you felt this way about a movie? TV Show? Don't worry, you're not alone. Reaction videos (RVs) are a genre of video in which an individual, known as a reactor, watches and responds to original content (OC), typically expressing their emotions, opinions, and critiques as they engage with the content. Reaction videos are surging in popularity, emerging as a distinctive facet of participatory culture on current-day social video-sharing platforms such as YouTube, Tiktok, and Twitch. This study looks into why so many people enjoy watching these 'watch-along', and sometimes 'listen-along', videos. We wanted to understand what motivations led viewers into tuning in, as well as their participation in reaction video culture. Through 16 semi-structured interviews with people who identified as regular consumers of reaction videos, we were able to provide a more nuanced understanding of viewer engagement with both 'reactors' and other viewers, as well as the values that drove their motivations into watching these videos. This research gives us a peek behind the screen as to how we watch and share media in today's digital world.",
+    image: "/images/RVPortfolio.png",
+    link: "https://vtechworks.lib.vt.edu/items/4c929f73-3812-4b64-a74a-a34d950e9273",
+    linkLabel: "View Thesis",
+  },
+  {
+    title: "Inspecting Individuals' Dynamics within Online Communities and Groups on Discord",
+    venue: "CS 5734: Social Computing and Computer-supported Cooperative Work Final Course Project, Virginia Tech, Fall 2023",
+    description:
+      "As many teenagers and young adults will confirm, online communities and virtual communications are some of the most common methods of engaging with peers, friends, and partners. Many find a greater sense of community in these online spaces, specifically Discord, since like-minded people are able to communicate without the limits of physical or temporal proximity. These relationships are largely unexplored, particularly compared to the development of relationships in a face-to-face context. Within these communities, there are often established rules and normalized behaviors, with information shared between community members. However, current existing literature on Discord explores its usage in academic and educational settings, rather than on its social and community aspects. In light of this, this study seeks to understand the establishment and development of relationships, collective behaviors, and information dissemination within the context of Discord communities.",
+    image: "/images/DiscordLogo.png",
+  },
+];
+
+// Touch swipe support for publications
+function useSwipeableCarousel(
+  currentIndex: number,
+  setIndex: (idx: number) => void,
+  maxIndex: number
+) {
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+  };
+  const onTouchEnd = () => {
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const delta = touchEndX.current - touchStartX.current;
+      if (delta > 60 && currentIndex > 0) {
+        setIndex(currentIndex - 1);
+      } else if (delta < -60 && currentIndex < maxIndex) {
+        setIndex(currentIndex + 1);
+      }
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+  return { onTouchStart, onTouchMove, onTouchEnd };
+}
+
+// Custom hook for mobile detection
+function useIsMobile() {
+  const theme = useTheme();
+  return useMediaQuery(theme.breakpoints.down('md'));
+}
+
 export default function Home() {
   const theme = useTheme();
+  const isMobile = useIsMobile();
+  const flexDirection = isMobile ? 'column' : 'row';
+  const gap = isMobile ? 24 : 64;
+  const padding = isMobile ? 16 : 32;
   const [tabValue, setTabValue] = useState(0);
   const accentBg = 'rgba(244,67,54,0.18)';
   const accentShadow = '0 0 12px 2px rgba(244,67,54,0.15)';
@@ -114,6 +174,14 @@ export default function Home() {
   const projectsPerView = 2;
   const totalProjects = projects.length;
   const maxIndex = Math.max(0, Math.ceil(totalProjects / projectsPerView) - 1);
+
+  // Publications carousel state
+  const [pubIndex, setPubIndex] = useState(0);
+  const pubCarouselRef = useRef<HTMLDivElement>(null);
+  const totalPubs = publications.length;
+
+  // Add directionRef to track navigation direction
+  const directionRef = useRef<'next' | 'prev'>('next');
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -146,6 +214,37 @@ export default function Home() {
         const scrollLeft = carouselRef.current.scrollLeft;
         const newIndex = Math.round(scrollLeft / (cardWidth * projectsPerView));
         setCarouselIndex(Math.max(0, Math.min(newIndex, maxIndex)));
+      }
+    }
+  };
+
+  const handlePubNext = () => {
+    if (pubCarouselRef.current) {
+      const card = pubCarouselRef.current.querySelector('div[role="pub-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32;
+        pubCarouselRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }
+  };
+  const handlePubPrev = () => {
+    if (pubCarouselRef.current) {
+      const card = pubCarouselRef.current.querySelector('div[role="pub-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32;
+        pubCarouselRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+      }
+    }
+  };
+  // Sync pubIndex with manual scroll
+  const handlePubCarouselScroll = () => {
+    if (pubCarouselRef.current) {
+      const card = pubCarouselRef.current.querySelector('div[role="pub-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32;
+        const scrollLeft = pubCarouselRef.current.scrollLeft;
+        const newIndex = Math.round(scrollLeft / cardWidth);
+        setPubIndex(Math.max(0, Math.min(newIndex, totalPubs - 1)));
       }
     }
   };
@@ -353,6 +452,136 @@ export default function Home() {
           </Paper>
         </Box>
 
+        {/* Slide 1.5: Research & Publications */}
+        <Box sx={{ width: '100vw', minHeight: '100vh', bgcolor: 'background.paper', scrollSnapAlign: 'start', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography variant="h3" sx={{ fontWeight: 700, mt: { xs: 12, md: 14 }, mb: 6, textAlign: 'center', width: '100%' }}>
+            Research & Publications
+          </Typography>
+          <Box sx={{ width: '100vw', height: { xs: 'auto', md: '70vh' }, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flex: 1 }}>
+            {/* Carousel Arrows */}
+            {pubIndex > 0 && (
+              <IconButton
+                onClick={() => {
+                  setPubIndex((idx) => Math.max(idx - 1, 0));
+                  directionRef.current = 'prev';
+                }}
+                sx={{
+                  position: 'absolute',
+                  left: { xs: 0, md: 32 },
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 20,
+                  bgcolor: '#fff',
+                  borderRadius: 999,
+                  boxShadow: 2,
+                  width: 48,
+                  height: 48,
+                  '&:hover': { bgcolor: 'rgba(244,67,54,0.08)' },
+                }}
+              >
+                <ChevronLeftIcon fontSize="large" />
+              </IconButton>
+            )}
+            {pubIndex < totalPubs - 1 && (
+              <IconButton
+                onClick={() => {
+                  setPubIndex((idx) => Math.min(idx + 1, totalPubs - 1));
+                  directionRef.current = 'next';
+                }}
+                sx={{
+                  position: 'absolute',
+                  right: { xs: 0, md: 32 },
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 20,
+                  bgcolor: '#fff',
+                  borderRadius: 999,
+                  boxShadow: 2,
+                  width: 48,
+                  height: 48,
+                  '&:hover': { bgcolor: 'rgba(244,67,54,0.08)' },
+                }}
+              >
+                <ChevronRightIcon fontSize="large" />
+              </IconButton>
+            )}
+            {/* Touch swipe support */}
+            {(() => {
+              const swipeHandlers = useSwipeableCarousel(pubIndex, setPubIndex, totalPubs - 1);
+              return (
+                <Box
+                  {...swipeHandlers}
+                  sx={{
+                    width: '90vw',
+                    minHeight: 400,
+                    height: { xs: 400, md: '70vh' },
+                    maxHeight: 700,
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box',
+                    background: 'transparent',
+                    flexDirection,
+                    gap,
+                    p: padding,
+                  }}
+                >
+                  <AnimatePresence initial={false} custom={pubIndex}>
+                    <motion.div
+                      key={pubIndex}
+                      role="pub-card"
+                      initial={{ x: directionRef.current === 'next' ? 100 : -100, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: directionRef.current === 'next' ? -100 : 100, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 30, duration: 0.5 }}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap,
+                        boxSizing: 'border-box',
+                      }}
+                    >
+                      {/* Text */}
+                      <Box sx={{ flex: 1.2, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: { xs: 'center', md: 'flex-start' }, textAlign: { xs: 'center', md: 'left' }, pr: { md: 6 } }}>
+                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                          {publications[pubIndex].title}
+                        </Typography>
+                        <Typography variant="subtitle2" sx={{ color: 'text.secondary', mb: 2 }}>
+                          {publications[pubIndex].venue}
+                        </Typography>
+                        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2, maxWidth: { xs: '100%', md: 'none' } }}>
+                          {publications[pubIndex].description}
+                        </Typography>
+                        {publications[pubIndex].link && (
+                          <Button href={publications[pubIndex].link} target="_blank" rel="noopener" variant="outlined" sx={{ mt: 1 }}>
+                            {publications[pubIndex].linkLabel || 'View Publication'}
+                          </Button>
+                        )}
+                      </Box>
+                      {/* Image */}
+                      <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', height: isMobile ? 240 : '100%', width: '100%' }}>
+                        <img
+                          src={publications[pubIndex].image}
+                          alt={publications[pubIndex].title}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 12, background: '#fafafa' }}
+                        />
+                      </Box>
+                    </motion.div>
+                  </AnimatePresence>
+                </Box>
+              );
+            })()}
+          </Box>
+        </Box>
+
         {/* Slide 2: Projects */}
         <Box sx={{ width: '100vw', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', scrollSnapAlign: 'start', position: 'relative', overflow: 'hidden' }}>
           <Paper
@@ -371,7 +600,7 @@ export default function Home() {
               boxSizing: 'border-box',
             }}
           >
-            <Typography variant="h3" sx={{ fontWeight: 700, mb: 4 }}>Projects</Typography>
+            <Typography variant="h3" sx={{ fontWeight: 700, mb: 4, textAlign: 'center', width: '100%' }}>Projects</Typography>
             {/* Carousel Arrows */}
             {carouselIndex > 0 && (
               <IconButton
