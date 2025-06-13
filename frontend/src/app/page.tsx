@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Box, Container, Typography, Paper, useTheme, Avatar, Tab, Tabs, Chip, Button } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Box, Container, Typography, Paper, useTheme, Avatar, Tab, Tabs, Chip, Button, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { UIEvent, WheelEvent } from 'react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 function Typewriter({ texts, speed = 80, pause = 1200 }: { texts: string[]; speed?: number; pause?: number }) {
   const [displayed, setDisplayed] = useState('');
@@ -57,44 +59,34 @@ function MfLogoPlaceholder() {
 const projects = [
   {
     title: 'PAER: Peer-AI Editing Repository',
-    description: "Elevate your cooking skills to the next level! Whether you're new to cooking or a professional, new AI always has something new for you to learn.",
-    tags: ['Onboarding', 'Culinary Education', 'Mobile App'],
-    image: '',
+    description: "Collaborative writing in academia is already challenging due to the difficulty of sharing context about document changes, and isolated AI usage by each member further amplifies this issue.\n We introduce PAER — our AI-Peer Editing Repository designed to streamline collaborative writing.",
+    tags: ['AI Writing Assistant', 'Collaborative Writing', 'Full-Stack Web App'],
+    image: '/images/manq-thumb.jpg',
+    videoPreview: '/gifs/PAER.gif',
     link: '#',
   },
   {
     title: 'Music Diary',
-    description: 'A virtual kitchen experience for learning and sharing recipes with friends and family.',
-    tags: ['UX', 'Web App'],
-    image: '',
+    description: 'Music Diary is a web based platform where users can log their favorite song daily, regardless of their streaming platform of choice!\n Similar to a diary, you log your music choices and your thoughts about your favorite (or least favorite) songs. This is your centralized space to curate and document your unique music taste as you reflect on your listening history!',
+    tags: ['Music Discovery', 'Social Platform', 'Full-Stack Web App'],
+    image: '/images/MusicDiaryLogo.png',
+    videoPreview: '',
     link: '#',
   },
   {
     title: 'DISC.',
-    description: 'A travel platform for seamless booking and trip management.',
-    tags: ['Travel', 'Mobile App'],
-    image: '',
+    description: 'Discover, or DISC. for short, is a revolutionary music app that aims to connect people through the power of music. \n Whether you are a die-hard fan of a particular artist or love discovering new music, Discover makes it easy to connect with like-minded people and share your thoughts!',
+    tags: ['Music Discovery', 'Social Platform', 'Creative Computing', 'Full-Stack Web App'],
+    image: '/images/DiscLogo.png',
+    videoPreview: '/gifs/Disc.gif',
     link: '#',
   },
   {
     title: 'Project Fellowship',
-    description: 'A project management tool for agile teams.',
-    tags: ['Agile', 'Productivity'],
-    image: '',
-    link: '#',
-  },
-  {
-    title: 'Online Learning Productivity Station',
-    description: 'A collection of my graphic design works.',
-    tags: ['Design', 'Gallery'],
-    image: '',
-    link: '#',
-  },
-  {
-    title: 'Inspecting Dynamics in Discord Communities',
-    description: 'A platform for connecting Echolab alumni and sharing experiences.',
-    tags: ['Community', 'Web App'],
-    image: '',
+    description: 'Project Fellowship aims to provide students of all levels and all working levels an easy and engaging experience through a one of a kind massive multiplayer online role playing game when searching for roommates that best suit their living style and budgets.\n It allows new users to input their living preferences, lifestyle, and the semester for needed housing and determines a match between students who share the most similarities that are also looking for roommates. ',
+    tags: ['Roommate Matching', 'UX/UI Design', 'User Research', 'Mobile App'],
+    image: '/images/ProjectFellowshipLogowoTag.png',
+    videoPreview: '/gifs/projectfellowshipCROPPED.gif',
     link: '#',
   },
 ];
@@ -117,9 +109,45 @@ export default function Home() {
     'a DJ.',
     'a gamer.'
   ];
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const projectsPerView = 2;
+  const totalProjects = projects.length;
+  const maxIndex = Math.max(0, Math.ceil(totalProjects / projectsPerView) - 1);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleNext = () => {
+    if (carouselRef.current) {
+      const card = carouselRef.current.querySelector('div[role="project-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32; // 32px gap
+        carouselRef.current.scrollBy({ left: cardWidth * projectsPerView, behavior: 'smooth' });
+      }
+    }
+  };
+  const handlePrev = () => {
+    if (carouselRef.current) {
+      const card = carouselRef.current.querySelector('div[role="project-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32;
+        carouselRef.current.scrollBy({ left: -cardWidth * projectsPerView, behavior: 'smooth' });
+      }
+    }
+  };
+  // Sync carouselIndex with manual scroll
+  const handleCarouselScroll = () => {
+    if (carouselRef.current) {
+      const card = carouselRef.current.querySelector('div[role="project-card"]');
+      if (card) {
+        const cardWidth = (card as HTMLElement).offsetWidth + 32;
+        const scrollLeft = carouselRef.current.scrollLeft;
+        const newIndex = Math.round(scrollLeft / (cardWidth * projectsPerView));
+        setCarouselIndex(Math.max(0, Math.min(newIndex, maxIndex)));
+      }
+    }
   };
 
   return (
@@ -229,12 +257,12 @@ export default function Home() {
         }}
       >
         {/* Slide 1: Intro */}
-        <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, scrollSnapAlign: 'start' }}>
+        <Box sx={{ width: '100vw', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, scrollSnapAlign: 'start' }}>
           <Paper
             elevation={0}
             sx={{
               width: '100%',
-              maxWidth: 1200,
+              maxWidth: 1600,
               py: { xs: 6, md: 10 },
               px: { xs: 2, md: 8 },
               background: 'transparent',
@@ -326,52 +354,164 @@ export default function Home() {
         </Box>
 
         {/* Slide 2: Projects */}
-        <Box sx={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, bgcolor: 'background.default', scrollSnapAlign: 'start' }}>
+        <Box sx={{ width: '100vw', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', scrollSnapAlign: 'start', position: 'relative', overflow: 'hidden' }}>
           <Paper
             elevation={0}
             sx={{
               width: '100%',
-              maxWidth: 1400,
+              maxWidth: '100vw',
               py: { xs: 4, md: 6 },
               px: { xs: 1, md: 4 },
               background: 'transparent',
               boxShadow: 'none',
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
               gap: 4,
-              height: { md: '80vh' },
+              boxSizing: 'border-box',
             }}
           >
-            {/* Projects Grid */}
-            <Box sx={{ flex: 1, overflowY: 'auto', pl: { md: 4 }, pr: 2, maxHeight: { md: '70vh' } }}>
-              <Typography variant="h3" sx={{ fontWeight: 700, mb: 4 }}>Projects</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 4 }}>
-                {projects.slice(0, 6).map((project, idx) => (
-                  <Paper key={idx} elevation={2} sx={{ borderRadius: 4, p: 3, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 320 }}>
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
-                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="h5" sx={{ fontWeight: 600 }}>{project.title}</Typography>
-                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
-                          {project.tags.map((tag, i) => (
-                            <Chip key={i} label={tag} size="small" sx={{ bgcolor: 'rgba(244,67,54,0.08)', color: '#F44336', fontWeight: 500 }} />
-                          ))}
-                        </Box>
-                      </Box>
-                      {/* Project image placeholder */}
-                      <Box sx={{ width: 80, height: 140, bgcolor: '#f5f5f5', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                        {/* Replace with <img src={project.image} ... /> if you have images */}
-                        <Typography variant="caption" color="text.secondary">Image</Typography>
-                      </Box>
+            <Typography variant="h3" sx={{ fontWeight: 700, mb: 4 }}>Projects</Typography>
+            {/* Carousel Arrows */}
+            {carouselIndex > 0 && (
+              <IconButton
+                onClick={handlePrev}
+                sx={{
+                  position: 'absolute',
+                  left: 24,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 2,
+                  bgcolor: '#fff',
+                  borderRadius: 999,
+                  boxShadow: 2,
+                  width: 48,
+                  height: 48,
+                  '&:hover': { bgcolor: 'rgba(244,67,54,0.08)' },
+                }}
+              >
+                <ChevronLeftIcon fontSize="large" />
+              </IconButton>
+            )}
+            {carouselIndex < maxIndex && (
+              <IconButton
+                onClick={handleNext}
+                sx={{
+                  position: 'absolute',
+                  right: 24,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 2,
+                  bgcolor: '#fff',
+                  borderRadius: 999,
+                  boxShadow: 2,
+                  width: 48,
+                  height: 48,
+                  '&:hover': { bgcolor: 'rgba(244,67,54,0.08)' },
+                }}
+              >
+                <ChevronRightIcon fontSize="large" />
+              </IconButton>
+            )}
+            <Box ref={carouselRef} onScroll={handleCarouselScroll} sx={{
+              width: '100vw',
+              maxWidth: 'calc(100vw - 64px)',
+              height: '60vh',
+              maxHeight: 500,
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              scrollSnapType: 'x mandatory',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              gap: 4,
+              pb: 2,
+              boxSizing: 'border-box',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}>
+              {projects.slice(0, 6).map((project, idx) => (
+                <Paper key={idx} elevation={2} role="project-card" sx={{
+                  borderRadius: 4,
+                  p: 0,
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  width: { xs: '90vw', sm: '70vw', md: 900 },
+                  maxWidth: 900,
+                  height: '60vh',
+                  maxHeight: 500,
+                  minHeight: 400,
+                  scrollSnapAlign: 'center',
+                  overflow: 'hidden',
+                  flex: '0 0 auto',
+                  boxSizing: 'border-box',
+                  alignItems: 'flex-start',
+                }}>
+                  {/* Left: Textual content */}
+                  <Box sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', minWidth: 0 }}>
+                    <Typography 
+                      variant="h5" 
+                      sx={{ 
+                        fontWeight: 600, 
+                        maxWidth: '100%', 
+                        whiteSpace: 'normal', 
+                        wordBreak: 'break-word',
+                        lineHeight: 1.2
+                      }}
+                    >
+                      {project.title}
+                    </Typography>
+                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
+                      {project.tags.map((tag, i) => (
+                        <Chip key={i} label={tag} size="small" sx={{ bgcolor: 'rgba(244,67,54,0.08)', color: '#F44336', fontWeight: 500 }} />
+                      ))}
                     </Box>
-                    <Typography variant="body1" sx={{ color: 'text.secondary', flex: 1 }}>{project.description}</Typography>
+                    {/* Description with even tighter paragraph spacing */}
+                    {project.description.split('\n').map((para, idx) => (
+                      <Typography key={idx} variant="body1" sx={{ color: 'text.secondary', flex: 1, mt: idx === 0 ? 2 : 1 }}>
+                        {para}
+                      </Typography>
+                    ))}
                     <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                       <Button href={project.link} endIcon={<span>&rarr;</span>} sx={{ color: '#F44336', fontWeight: 600 }}>
                         View Project
                       </Button>
                     </Box>
-                  </Paper>
-                ))}
-              </Box>
+                  </Box>
+                  {/* Right: Image/GIF */}
+                  <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', bgcolor: 'transparent', height: '100%', p: { xs: 2, sm: 3 } }}>
+                    {project.videoPreview ? (
+                      <img
+                        src={project.videoPreview}
+                        alt={project.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          maxWidth: '90%',
+                          maxHeight: '90%',
+                          objectFit: 'contain',
+                          display: 'block',
+                          margin: '0 auto',
+                        }}
+                      />
+                    ) : project.image ? (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          maxWidth: '90%',
+                          maxHeight: '90%',
+                          objectFit: 'contain',
+                          display: 'block',
+                          margin: '0 auto',
+                        }}
+                      />
+                    ) : null}
+                  </Box>
+                </Paper>
+              ))}
             </Box>
           </Paper>
         </Box>
