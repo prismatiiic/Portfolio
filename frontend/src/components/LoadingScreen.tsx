@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,8 +12,18 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const [currentText, setCurrentText] = useState('');
   const fullText = 'YTYKM';
   const [isComplete, setIsComplete] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasPlayedRef = useRef(false);
 
   useEffect(() => {
+    // Play DJ tag sound after a 2 second delay, only once
+    const audioTimeout = setTimeout(() => {
+      if (!hasPlayedRef.current && audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(() => {});
+        hasPlayedRef.current = true;
+      }
+    }, 2000);
     let currentIndex = 0;
     const interval = setInterval(() => {
       if (currentIndex < fullText.length) {
@@ -29,66 +39,72 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
       }
     }, 200);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(audioTimeout);
+    };
   }, [fullText, onLoadingComplete]);
 
   return (
-    <AnimatePresence>
-      {!isComplete && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#000000',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999,
-          }}
-        >
-          <Box
-            sx={{
+    <>
+      <audio ref={audioRef} src="/sounds/IntroTag.wav" preload="auto" />
+      <AnimatePresence>
+        {!isComplete && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#000000',
               display: 'flex',
-              flexDirection: 'column',
+              justifyContent: 'center',
               alignItems: 'center',
-              gap: 2,
+              zIndex: 9999,
             }}
           >
-            <Typography
-              variant="h1"
-              component={motion.div}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <Box
               sx={{
-                fontFamily: 'monospace',
-                fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
-                fontWeight: 'bold',
-                letterSpacing: '0.5rem',
-                color: '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
               }}
             >
-              {currentText}
-            </Typography>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-              style={{
-                height: '2px',
-                backgroundColor: '#ff0000',
-                marginTop: '1rem',
-              }}
-            />
-          </Box>
-        </motion.div>
-      )}
-    </AnimatePresence>
+              <Typography
+                variant="h1"
+                component={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                sx={{
+                  fontFamily: 'monospace',
+                  fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+                  fontWeight: 'bold',
+                  letterSpacing: '0.5rem',
+                  color: '#ffffff',
+                }}
+              >
+                {currentText}
+              </Typography>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 2, ease: 'easeInOut' }}
+                style={{
+                  height: '2px',
+                  backgroundColor: '#ff0000',
+                  marginTop: '1rem',
+                }}
+              />
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 } 
