@@ -9,6 +9,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useThemeContext } from '@/context/ThemeContext';
+import nextConfig from '../../next.config.mjs';
+
+const basePath = nextConfig.basePath || '';
 
 function Typewriter({ texts, speed = 80, pause = 1200 }: { texts: string[]; speed?: number; pause?: number }) {
   const [displayed, setDisplayed] = useState('');
@@ -45,15 +48,15 @@ const projects = [
     title: 'PAER: Peer-AI Editing Repository',
     description: "Collaborative writing in academia is already challenging due to the difficulty of sharing context about document changes, and isolated AI usage by each member further amplifies this issue.\n We introduce PAER — our AI-Peer Editing Repository designed to streamline collaborative writing.",
     tags: ['AI Writing Assistant', 'Collaborative Writing', 'Full-Stack Web App'],
-    image: '/images/manq-thumb.jpg',
-    videoPreview: '/gifs/PAER.gif',
+    image: `${basePath}/images/manq-thumb.jpg`,
+    videoPreview: `${basePath}/gifs/PAER.gif`,
     link: '#',
   },
   {
     title: 'Music Diary',
     description: 'Music Diary is a web based platform where users can log their favorite song daily, regardless of their streaming platform of choice!\n Similar to a diary, you log your music choices and your thoughts about your favorite (or least favorite) songs. This is your centralized space to curate and document your unique music taste as you reflect on your listening history!',
     tags: ['Music Discovery', 'Social Platform', 'Full-Stack Web App'],
-    image: '/images/MusicDiaryLogo.png',
+    image: `${basePath}/images/MusicDiaryLogo.png`,
     videoPreview: '',
     link: '#',
   },
@@ -61,16 +64,16 @@ const projects = [
     title: 'DISC.',
     description: 'Discover, or DISC. for short, is a revolutionary music app that aims to connect people through the power of music. \n Whether you are a die-hard fan of a particular artist or love discovering new music, Discover makes it easy to connect with like-minded people and share your thoughts!',
     tags: ['Music Discovery', 'Social Platform', 'Creative Computing', 'Full-Stack Web App'],
-    image: '/images/DiscLogo.png',
-    videoPreview: '/gifs/Disc.gif',
+    image: `${basePath}/images/DiscLogo.png`,
+    videoPreview: `${basePath}/gifs/Disc.gif`,
     link: '#',
   },
   {
     title: 'Project Fellowship',
     description: 'Project Fellowship aims to provide students of all levels and all working levels an easy and engaging experience through a one of a kind massive multiplayer online role playing game when searching for roommates that best suit their living style and budgets.\n It allows new users to input their living preferences, lifestyle, and the semester for needed housing and determines a match between students who share the most similarities that are also looking for roommates. ',
     tags: ['Roommate Matching', 'UX/UI Design', 'User Research', 'Mobile App'],
-    image: '/images/ProjectFellowshipLogowoTag.png',
-    videoPreview: '/gifs/projectfellowshipCROPPED.gif',
+    image: `${basePath}/images/ProjectFellowshipLogowoTag.png`,
+    videoPreview: `${basePath}/gifs/projectfellowshipCROPPED.gif`,
     link: '#',
   },
 ];
@@ -82,7 +85,7 @@ const publications = [
     venue: "Master's Thesis, Virginia Tech, 2025",
     description:
       "Have you ever listened to a new album, had a particular track stick with you and thought to yourself, 'I wonder who else is resonating with this like I am'? So, you proceed to look up reactions to that album with the hopes that someone else is reacting and giving the same amount, if not more, praise to that same track? Perhaps, you felt this way about a movie? TV Show? Don't worry, you're not alone. Reaction videos (RVs) are a genre of video in which an individual, known as a reactor, watches and responds to original content (OC), typically expressing their emotions, opinions, and critiques as they engage with the content. Reaction videos are surging in popularity, emerging as a distinctive facet of participatory culture on current-day social video-sharing platforms such as YouTube, Tiktok, and Twitch. This study looks into why so many people enjoy watching these 'watch-along', and sometimes 'listen-along', videos. We wanted to understand what motivations led viewers into tuning in, as well as their participation in reaction video culture. Through 16 semi-structured interviews with people who identified as regular consumers of reaction videos, we were able to provide a more nuanced understanding of viewer engagement with both 'reactors' and other viewers, as well as the values that drove their motivations into watching these videos. This research gives us a peek behind the screen as to how we watch and share media in today's digital world.",
-    image: "/images/RVPortfolio.png",
+    image: `${basePath}/images/RVPortfolio.png`,
     link: "https://vtechworks.lib.vt.edu/items/4c929f73-3812-4b64-a74a-a34d950e9273",
     linkLabel: "Read!",
   },
@@ -91,7 +94,7 @@ const publications = [
     venue: "CS 5734: Social Computing and Computer-supported Cooperative Work Final Course Project, Virginia Tech, Fall 2023",
     description:
       "As many teenagers and young adults will confirm, online communities and virtual communications are some of the most common methods of engaging with peers, friends, and partners. Many find a greater sense of community in these online spaces, specifically Discord, since like-minded people are able to communicate without the limits of physical or temporal proximity. These relationships are largely unexplored, particularly compared to the development of relationships in a face-to-face context. Within these communities, there are often established rules and normalized behaviors, with information shared between community members. However, current existing literature on Discord explores its usage in academic and educational settings, rather than on its social and community aspects. In light of this, this study seeks to understand the establishment and development of relationships, collective behaviors, and information dissemination within the context of Discord communities.",
-    image: "/images/DiscordLogo.png",
+    image: `${basePath}/images/DiscordLogo.png`,
   },
 ];
 
@@ -1151,8 +1154,8 @@ export default function Home() {
                 </Box>
                 <Box>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'text.primary' }}>Resumes</Typography>
-                  <a href="/resumes/UserResearcherResume.pdf" target="_blank" rel="noopener" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}>User Researcher Resume</a>
-                  <a href="/resumes/SoftwareResume.pdf" target="_blank" rel="noopener" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}>Software Developer Resume</a>
+                  <a href={`${basePath}/resumes/UserResearcherResume.pdf`} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none' }}>User Researcher Resume</a>
+                  <a href={`${basePath}/resumes/SoftwareResume.pdf`} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none' }}>Software Developer Resume</a>
                 </Box>
               </Paper>
               {/* Email Card */}

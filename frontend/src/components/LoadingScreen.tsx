@@ -3,6 +3,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
+import nextConfig from '../../next.config.mjs';
+
+const basePath = nextConfig.basePath || '';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -47,7 +50,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
 
   return (
     <>
-      <audio ref={audioRef} src="/sounds/IntroTag.wav" preload="auto" />
+      <audio ref={audioRef} src={`${basePath}/sounds/IntroTag.wav`} preload="auto" />
       <AnimatePresence>
         {!isComplete && (
           <motion.div
