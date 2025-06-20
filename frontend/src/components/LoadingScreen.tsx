@@ -20,7 +20,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const hasPlayedRef = useRef(false);
   const textCompleteRef = useRef(false);
 
-  // Critical images to preload
+  // Preloading images
   const criticalImages = [
     `${basePath}/images/IMG_8060.JPG`,
     `${basePath}/images/IMG_8105.JPG`,
@@ -35,7 +35,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   ];
 
   useEffect(() => {
-    // Preload all critical images
+    
     setTotalImages(criticalImages.length);
     
     const loadImage = (src: string): Promise<void> => {
@@ -46,7 +46,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           resolve();
         };
         img.onerror = () => {
-          // Still count as loaded to prevent infinite waiting
+          
           setImagesLoaded(prev => prev + 1);
           resolve();
         };
@@ -54,7 +54,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
       });
     };
 
-    // Load all images in parallel
+    // Parallel load images
     Promise.all(criticalImages.map(loadImage));
   }, []);
 
