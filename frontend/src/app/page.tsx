@@ -927,7 +927,7 @@ export default function Home() {
                           textAlign: 'left',
                           justifyContent: 'center',
                         }}>
-                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
                             <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                               {project.tags.map((tag, i) => (
@@ -1009,7 +1009,7 @@ export default function Home() {
                     alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
-                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                         {project.tags.map((tag, i) => (
