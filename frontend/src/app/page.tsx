@@ -927,27 +927,29 @@ export default function Home() {
                           textAlign: 'left',
                           justifyContent: 'center',
                         }}>
-                          <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', minWidth: 0 }}>
+                          <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                             <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                               {project.tags.map((tag, i) => (
                                 <Chip key={i} label={tag} size="small" sx={{ bgcolor: accentBg, color: theme.palette.primary.main, fontWeight: 500 }} />
                               ))}
                             </Box>
-                            {project.description.split('\n').map((para, idx) => (
-                              <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
-                            ))}
-                            <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
+                            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                              {project.description.split('\n').map((para, idx) => (
+                                <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
+                              ))}
+                            </Box>
+                            <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                               <Button onClick={() => setFlippedCards(f => ({ ...f, [idx]: true }))} sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
                                 Learn More
                               </Button>
                             </Box>
                           </Box>
-                          <Box sx={{ flex: { xs: 'none', sm: 1 }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 }, maxHeight: { xs: 250, sm: 'none' } }}>
+                          <Box sx={{ flex: { xs: 'none', sm: 1 }, height: { xs: 250, sm: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                             {project.videoPreview ? (
-                              <img src={project.videoPreview} alt={project.title} style={{ width: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+                              <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                             ) : project.image ? (
-                              <img src={project.image} alt={project.title} style={{ width: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+                              <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                             ) : null}
                           </Box>
                         </Paper>
@@ -1009,28 +1011,30 @@ export default function Home() {
                     alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
-                    <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', minWidth: 0 }}>
+                    <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                         {project.tags.map((tag, i) => (
                           <Chip key={i} label={tag} size="small" sx={{ bgcolor: accentBg, color: theme.palette.primary.main, fontWeight: 500 }} />
                         ))}
                       </Box>
-                      {project.description.split('\n').map((para, idx) => (
-                        <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
-                      ))}
-                      <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
+                      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        {project.description.split('\n').map((para, idx) => (
+                          <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
+                        ))}
+                      </Box>
+                      <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end' }}>
                         <Button href={project.link} sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
                           Learn More
                         </Button>
                       </Box>
                     </Box>
                     {/* Right: Image/GIF */}
-                    <Box sx={{ flex: { xs: 'none', sm: 1 }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 }, maxHeight: { xs: 250, sm: 'none' } }}>
+                    <Box sx={{ flex: { xs: 'none', sm: 1 }, height: { xs: 250, sm: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                       {project.videoPreview ? (
-                        <img src={project.videoPreview} alt={project.title} style={{ width: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+                        <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                       ) : project.image ? (
-                        <img src={project.image} alt={project.title} style={{ width: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
+                        <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                       ) : null}
                     </Box>
                   </Paper>
