@@ -1011,7 +1011,7 @@ export default function Home() {
                     boxSizing: 'border-box',
                     alignItems: 'center',
                   }}>
-                    {/* Left: Textual content */}
+                    {/* Left: Text */}
                     <Box sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', minWidth: 0 }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
@@ -1077,7 +1077,7 @@ export default function Home() {
                           bgcolor: accentBg,
                           color: theme.palette.primary.main,
                           fontWeight: 500,
-                          border: `1px solid ${theme.palette.primary.main}4D`, // 4D is hex for 30% opacity
+                          border: `1px solid ${theme.palette.primary.main}4D`, // hex for 30% opacity
                           '&:hover': {
                             bgcolor: `rgba(${parseInt(theme.palette.primary.main.slice(1, 3), 16)}, ${parseInt(theme.palette.primary.main.slice(3, 5), 16)}, ${parseInt(theme.palette.primary.main.slice(5, 7), 16)}, 0.25)`,
                             transform: 'scale(1.05)',

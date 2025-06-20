@@ -105,12 +105,11 @@ a:hover {
 }
 
 .name-text-light {
-  /* This creates the knockout effect */
-  background: #ffffff; /* Page background color */
+  background: #ffffff;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1.5px #9333ea; /* purple-600 */
+  -webkit-text-stroke: 1.5px #9333ea;
   text-decoration: none;
 } 
