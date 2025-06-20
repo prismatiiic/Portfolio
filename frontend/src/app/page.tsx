@@ -901,12 +901,12 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', sm: '60vh' }, maxHeight: { xs: 'none', sm: 500 }, minHeight: { xs: 'auto', sm: 400 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', md: 500 }, minHeight: { xs: 480, md: 'auto' }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
                           width: '100%',
-                          height: { xs: 'auto', sm: '100%' },
+                          height: '100%',
                           transformStyle: 'preserve-3d',
                           transition: 'transform 0.7s cubic-bezier(.4,1.3,.6,1)',
                           transform: flippedCards[idx] ? 'rotateY(180deg)' : 'none',
@@ -916,18 +916,18 @@ export default function Home() {
                         <Paper elevation={2} className="project-card" sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: { xs: 'auto', sm: '100%' },
+                          height: '100%',
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
                           display: 'flex',
-                          flexDirection: { xs: 'column', sm: 'row' },
+                          flexDirection: { xs: 'column', md: 'row' },
                           alignItems: 'center',
                           bgcolor: 'background.paper',
                           textAlign: 'left',
                           justifyContent: 'center',
                         }}>
-                          <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
                             <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                               {project.tags.map((tag, i) => (
@@ -939,13 +939,13 @@ export default function Home() {
                                 <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
                               ))}
                             </Box>
-                            <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                            <Box sx={{ marginTop: 'auto', paddingTop: 2, display: 'flex', justifyContent: 'flex-end' }}>
                               <Button onClick={() => setFlippedCards(f => ({ ...f, [idx]: true }))} sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
                                 Learn More
                               </Button>
                             </Box>
                           </Box>
-                          <Box sx={{ flex: { xs: 'none', sm: 1 }, height: { xs: 250, sm: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
+                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', height: { xs: 250, md: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                             {project.videoPreview ? (
                               <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                             ) : project.image ? (
@@ -998,12 +998,11 @@ export default function Home() {
                     borderRadius: 4,
                     p: 0,
                     display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
+                    flexDirection: { xs: 'column', md: 'row' },
                     width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
-                    height: { xs: 'auto', sm: '60vh' },
-                    maxHeight: { xs: 'none', sm: 500 },
-                    minHeight: { xs: 'auto', sm: 400 },
+                    height: { xs: 'auto', md: 500 },
+                    minHeight: { xs: 480, md: 'auto' },
                     scrollSnapAlign: 'center',
                     overflow: 'hidden',
                     flex: '0 0 auto',
@@ -1011,7 +1010,7 @@ export default function Home() {
                     alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
-                    <Box sx={{ flex: { xs: 'none', sm: 1 }, p: 3, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                         {project.tags.map((tag, i) => (
@@ -1023,14 +1022,14 @@ export default function Home() {
                           <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
                         ))}
                       </Box>
-                      <Box sx={{ mt: 'auto', pt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                      <Box sx={{ marginTop: 'auto', paddingTop: 2, display: 'flex', justifyContent: 'flex-end' }}>
                         <Button href={project.link} sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
                           Learn More
                         </Button>
                       </Box>
                     </Box>
                     {/* Right: Image/GIF */}
-                    <Box sx={{ flex: { xs: 'none', sm: 1 }, height: { xs: 250, sm: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
+                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', height: { xs: 250, md: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                       {project.videoPreview ? (
                         <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                       ) : project.image ? (
