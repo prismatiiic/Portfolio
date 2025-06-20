@@ -9,9 +9,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useThemeContext } from '@/context/ThemeContext';
-import nextConfig from '../../next.config.mjs';
 
-const basePath = nextConfig.basePath || '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 function Typewriter({ texts, speed = 80, pause = 1200 }: { texts: string[]; speed?: number; pause?: number }) {
   const [displayed, setDisplayed] = useState('');
@@ -463,10 +462,10 @@ export default function Home() {
 
   const [flippedCards, setFlippedCards] = useState<{ [idx: number]: boolean }>({});
   const projectVideos: { [title: string]: string } = {
-    'PAER: Peer-AI Editing Repository': '/videos/PAERPortfolioVid.mp4',
-    'Music Diary': '/videos/MusicDiaryWalkthrough.mp4',
-    'DISC.': '/videos/DISCPortfolioAd.mp4',
-    'Project Fellowship': '/videos/ProjectFellowshipWalkthrough.mp4',
+    'PAER: Peer-AI Editing Repository': `${basePath}/videos/PAERPortfolioVid.mp4`,
+    'Music Diary': `${basePath}/videos/MusicDiaryWalkthrough.mp4`,
+    'DISC.': `${basePath}/videos/DISCPortfolioAd.mp4`,
+    'Project Fellowship': `${basePath}/videos/ProjectFellowshipWalkthrough.mp4`,
   };
 
   const TabStyle = {
@@ -646,7 +645,7 @@ export default function Home() {
                   }}
                 >
                   <img
-                    src="/images/IMG_8060.JPG"
+                    src={`${basePath}/images/IMG_8060.JPG`}
                     alt="Rodney Okyere Dark"
                     style={{
                       position: 'absolute',
@@ -660,7 +659,7 @@ export default function Home() {
                     }}
                   />
                   <img
-                    src="/images/IMG_8105.JPG"
+                    src={`${basePath}/images/IMG_8105.JPG`}
                     alt="Rodney Okyere Light"
                     style={{
                       position: 'absolute',

@@ -3,9 +3,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import nextConfig from '../../next.config.mjs';
 
-const basePath = nextConfig.basePath || '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
