@@ -901,7 +901,7 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: '60vh', maxHeight: 500, minHeight: 400, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', sm: '60vh' }, maxHeight: { xs: 'none', sm: 500 }, minHeight: { xs: 'auto', sm: 400 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
@@ -922,7 +922,7 @@ export default function Home() {
                           p: 0,
                           display: 'flex',
                           flexDirection: { xs: 'column', sm: 'row' },
-                          alignItems: 'flex-start',
+                          alignItems: 'center',
                           bgcolor: 'background.paper',
                           textAlign: 'left',
                           justifyContent: 'center',
@@ -943,7 +943,7 @@ export default function Home() {
                               </Button>
                             </Box>
                           </Box>
-                          <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', bgcolor: 'transparent', height: '100%', p: { xs: 2, sm: 3 } }}>
+                          <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                             {project.videoPreview ? (
                               <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                             ) : project.image ? (
@@ -999,14 +999,14 @@ export default function Home() {
                     flexDirection: { xs: 'column', sm: 'row' },
                     width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
-                    height: '60vh',
-                    maxHeight: 500,
-                    minHeight: 400,
+                    height: { xs: 'auto', sm: '60vh' },
+                    maxHeight: { xs: 'none', sm: 500 },
+                    minHeight: { xs: 'auto', sm: 400 },
                     scrollSnapAlign: 'center',
                     overflow: 'hidden',
                     flex: '0 0 auto',
                     boxSizing: 'border-box',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
                     <Box sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', minWidth: 0 }}>
@@ -1026,7 +1026,7 @@ export default function Home() {
                       </Box>
                     </Box>
                     {/* Right: Image/GIF */}
-                    <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', bgcolor: 'transparent', height: '100%', p: { xs: 2, sm: 3 } }}>
+                    <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                       {project.videoPreview ? (
                         <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                       ) : project.image ? (
