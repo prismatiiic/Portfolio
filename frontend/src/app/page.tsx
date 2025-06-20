@@ -815,7 +815,7 @@ export default function Home() {
         </Box>
 
         {/* Slide 2: Projects */}
-        <Box id="projects-section" sx={{ width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
+        <Box id="projects-section" sx={{ width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', position: 'relative', overflow: { xs: 'visible', md: 'hidden' } }}>
           <Paper
             elevation={0}
             sx={{
@@ -884,7 +884,7 @@ export default function Home() {
               height: { xs: 'auto', sm: '60vh' },
               maxHeight: { xs: 'none', sm: 500 },
               overflowX: 'auto',
-              overflowY: 'hidden',
+              overflowY: { xs: 'visible', sm: 'hidden' },
               scrollSnapType: 'x mandatory',
               display: 'flex',
               flexDirection: 'row',
@@ -906,7 +906,7 @@ export default function Home() {
                         sx={{
                           position: 'relative',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', md: '100%' },
                           transformStyle: 'preserve-3d',
                           transition: 'transform 0.7s cubic-bezier(.4,1.3,.6,1)',
                           transform: flippedCards[idx] ? 'rotateY(180deg)' : 'none',
@@ -1026,7 +1026,7 @@ export default function Home() {
                       </Box>
                     </Box>
                     {/* Right: Image/GIF */}
-                    <Box sx={{ flex: 1, height: { xs: 250, md: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
+                    <Box sx={{ flex: 1, height: { xs: 'auto', md: '100%' }, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'transparent', p: { xs: 2, sm: 3 } }}>
                       {project.videoPreview ? (
                         <img src={project.videoPreview} alt={project.title} style={{ width: '100%', height: '100%', maxWidth: '90%', maxHeight: '90%', objectFit: 'contain', display: 'block', margin: '0 auto' }} />
                       ) : project.image ? (
