@@ -901,7 +901,7 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', md: 500 }, minHeight: { xs: 480, md: 'auto' }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', md: 500 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
@@ -927,7 +927,7 @@ export default function Home() {
                           textAlign: 'left',
                           justifyContent: 'center',
                         }}>
-                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
+                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                             <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                               {project.tags.map((tag, i) => (
@@ -1002,7 +1002,6 @@ export default function Home() {
                     width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
                     height: { xs: 'auto', md: 500 },
-                    minHeight: { xs: 480, md: 'auto' },
                     scrollSnapAlign: 'center',
                     overflow: 'hidden',
                     flex: '0 0 auto',
@@ -1010,7 +1009,7 @@ export default function Home() {
                     alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
-                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
+                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                         {project.tags.map((tag, i) => (
