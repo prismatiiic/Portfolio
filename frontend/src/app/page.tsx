@@ -880,7 +880,7 @@ export default function Home() {
             )}
             <Box ref={carouselRef} onScroll={handleCarouselScroll} sx={{
               width: '100%',
-              maxWidth: 'calc(100vw - 64px)',
+              maxWidth: { xs: 'calc(100vw - 88px)', md: 'calc(100vw - 64px)' },
               height: '60vh',
               maxHeight: 500,
               overflowX: 'auto',

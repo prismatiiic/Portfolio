@@ -20,7 +20,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   useEffect(() => {
     // Play DJ tag sound after a 2 second delay, only once
     const audioTimeout = setTimeout(() => {
-      if (!hasPlayedRef.current && audioRef.current) {
+      if (!hasPlayedRef.current && audioRef.current && window.innerWidth > 768) {
         audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => {});
         hasPlayedRef.current = true;
