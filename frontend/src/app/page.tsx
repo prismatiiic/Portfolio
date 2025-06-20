@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { Box, Container, Typography, Paper, useTheme, Avatar, Tab, Tabs, Chip, Button, IconButton, useMediaQuery, alpha } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { UIEvent, WheelEvent } from 'react';
@@ -103,6 +103,147 @@ const skills = {
   "Miscellaneous": ["Technical Writing", "Public Speaking", "Photoshop", "Premiere Pro", "After Effects", "Vegas Pro", "Serato DJ Pro"]
 };
 
+const musicMixes: { soundcloud: string; embedHtml?: string }[] = [
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/friendsflings-vol-25',
+    embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2112960165&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/friendsflings-vol-25" title="FRIENDS&amp;FLINGS VOL. 2.5" target="_blank" style="color: #cccccc; text-decoration: none;">FRIENDS&amp;FLINGS VOL. 2.5</a></div>`
+  },
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/wintry-warmth-vol-ii',
+    embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2003699791&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/wintry-warmth-vol-ii" title="WINTRY WARMTH VOL. II" target="_blank" style="color: #cccccc; text-decoration: none;">WINTRY WARMTH VOL. II</a></div>`
+  },
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/rk2groooovy-club-rko-mini-mix-2',
+    embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1593170217&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/rk2groooovy-club-rko-mini-mix-2" title="RK2GROOOOVY [CLUB RKO MINI MIX #2]" target="_blank" style="color: #cccccc; text-decoration: none;">RK2GROOOOVY [CLUB RKO MINI MIX #2]</a></div>`
+  },
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/wintry-warmth-vol-i',
+    embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1707664320&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/wintry-warmth-vol-i" title="WINTRY WARMTH VOL. I" target="_blank" style="color: #cccccc; text-decoration: none;">WINTRY WARMTH VOL. I</a></div>`
+  },
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/friendsflings-vol-2',
+    embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1531833634&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href=\"https://soundcloud.com/mgf221\" title=\"RKO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RKO</a> · <a href=\"https://soundcloud.com/mgf221/friendsflings-vol-2\" title=\"FRIENDS&amp;FLINGS VOL. 2\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">FRIENDS&amp;FLINGS VOL. 2</a></div>`
+  },
+  {
+    soundcloud: 'https://soundcloud.com/mgf221/sets/rated-rko-radio',
+    embedHtml: `<iframe width=\"100%\" height=\"450\" scrolling=\"no\" frameborder=\"no\" allow=\"autoplay\" src=\"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1500834493&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true\"></iframe><div style=\"font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;\"><a href=\"https://soundcloud.com/mgf221\" title=\"RKO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RKO</a> · <a href=\"https://soundcloud.com/mgf221/sets/rated-rko-radio\" title=\"RATED RKO RADIO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RATED RKO RADIO</a></div>`
+  },
+];
+
+const MusicSection = memo(function MusicSection({
+  musicCarouselRef,
+  musicIndex,
+  isMusicAtEnd,
+  handleMusicPrev,
+  handleMusicNext,
+  handleMusicCarouselScroll
+}: any) {
+  const theme = useTheme();
+  const soundCloudPlayers = useMemo(() => (
+    musicMixes.map((mix, idx) => (
+      <Paper key={idx} elevation={2} role="music-card" sx={{
+        borderRadius: 4,
+        p: 0,
+        display: 'block',
+        width: { xs: '95vw', sm: '80vw', md: 600 },
+        maxWidth: 600,
+        minWidth: 320,
+        scrollSnapAlign: 'center',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        bgcolor: 'rgba(255,255,255,0.08)',
+        textAlign: 'center',
+        justifyContent: 'center',
+      }}>
+        {mix.embedHtml ? (
+          <Box sx={{ width: '100%' }} dangerouslySetInnerHTML={{ __html: mix.embedHtml }} />
+        ) : (
+          <iframe width="100%" height="450" scrolling="no" frameBorder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(mix.soundcloud)}&color=%23ff5500&auto_play=false`} />
+        )}
+      </Paper>
+    ))
+  ), []);
+
+  return (
+    <Box id="music-section" sx={{ width: '100%', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ width: '100%', maxWidth: 1200, px: { xs: 2, md: 6 }, py: { xs: 6, md: 10 }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+        <Typography variant="h2" sx={{ fontWeight: 700, color: 'text.primary', mb: 2, textAlign: 'center', width: '100%' }}>
+          Music
+        </Typography>
+        <Typography variant="subtitle1" sx={{ color: 'text.primary', fontWeight: 500, mb: 2, textAlign: 'center', width: '100%', fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+          From curating mixes to being an on-air FM DJ for WUVT-FM 90.7 Blacksburg, I'm reinventing MY sound everyday! Feel free to check out my latest mixes as well as my archive of WUVT sets!
+        </Typography>
+        <Box sx={{ width: '100%', maxWidth: '100vw', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
+          {/* Left Arrow Column */}
+          <Box sx={{ width: { xs: 40, md: 64 }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            {musicIndex > 0 && (
+              <IconButton
+                onClick={handleMusicPrev}
+                sx={{
+                  bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.85)' : '#f0f0f0',
+                  borderRadius: 999,
+                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.18)',
+                  width: 48,
+                  height: 48,
+                  color: theme.palette.primary.main,
+                  border: theme.palette.mode === 'light' ? `1px solid ${theme.palette.divider}` : 'none',
+                  '&:hover': { bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.95)' : '#e0e0e0' },
+                }}
+              >
+                <ChevronLeftIcon fontSize="large" />
+              </IconButton>
+            )}
+          </Box>
+          {/* Carousel Column */}
+          <Box
+            ref={musicCarouselRef}
+            onScroll={handleMusicCarouselScroll}
+            sx={{
+              width: '100%',
+              maxWidth: 'calc(100vw - 128px)',
+              height: '60vh',
+              maxHeight: 500,
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              scrollSnapType: 'x mandatory',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              gap: 4,
+              pb: 2,
+              boxSizing: 'border-box',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}
+          >
+            {soundCloudPlayers}
+          </Box>
+          {/* Right Arrow Column */}
+          {!isMusicAtEnd && (
+            <Box sx={{ width: { xs: 40, md: 64 }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+              <IconButton
+                onClick={handleMusicNext}
+                sx={{
+                  bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.85)' : '#f0f0f0',
+                  borderRadius: 999,
+                  boxShadow: '0 2px 8px 0 rgba(0,0,0,0.18)',
+                  width: 48,
+                  height: 48,
+                  color: theme.palette.primary.main,
+                  border: theme.palette.mode === 'light' ? `1px solid ${theme.palette.divider}` : 'none',
+                  '&:hover': { bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.95)' : '#e0e0e0' },
+                }}
+              >
+                <ChevronRightIcon fontSize="large" />
+              </IconButton>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+});
+MusicSection.displayName = 'MusicSection';
 
 function useIsMobile() {
   const theme = useTheme();
@@ -241,7 +382,7 @@ export default function Home() {
   const musicCarouselRef = useRef<HTMLDivElement>(null);
 
   const [isMusicAtEnd, setIsMusicAtEnd] = useState(false);
-  const handleMusicNext = () => {
+  const handleMusicNext = useCallback(() => {
     if (musicCarouselRef.current) {
       const card = musicCarouselRef.current.querySelector('div[role="music-card"]');
       if (card) {
@@ -255,8 +396,8 @@ export default function Home() {
         }
       }
     }
-  };
-  const handleMusicPrev = () => {
+  }, []);
+  const handleMusicPrev = useCallback(() => {
     if (musicCarouselRef.current) {
       const card = musicCarouselRef.current.querySelector('div[role="music-card"]');
       if (card) {
@@ -264,8 +405,8 @@ export default function Home() {
         musicCarouselRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
       }
     }
-  };
-  const handleMusicCarouselScroll = () => {
+  }, []);
+  const handleMusicCarouselScroll = useCallback(() => {
     if (musicCarouselRef.current) {
       const card = musicCarouselRef.current.querySelector('div[role="music-card"]');
       if (card) {
@@ -280,34 +421,8 @@ export default function Home() {
         setIsMusicAtEnd(scrollLeft + clientWidth >= scrollWidth - 8);
       }
     }
-  };
+  }, []);
 
-  const musicMixes: { soundcloud: string; embedHtml?: string }[] = [
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/friendsflings-vol-25',
-      embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2112960165&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/friendsflings-vol-25" title="FRIENDS&amp;FLINGS VOL. 2.5" target="_blank" style="color: #cccccc; text-decoration: none;">FRIENDS&amp;FLINGS VOL. 2.5</a></div>`
-    },
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/wintry-warmth-vol-ii',
-      embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2003699791&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/wintry-warmth-vol-ii" title="WINTRY WARMTH VOL. II" target="_blank" style="color: #cccccc; text-decoration: none;">WINTRY WARMTH VOL. II</a></div>`
-    },
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/rk2groooovy-club-rko-mini-mix-2',
-      embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1593170217&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/rk2groooovy-club-rko-mini-mix-2" title="RK2GROOOOVY [CLUB RKO MINI MIX #2]" target="_blank" style="color: #cccccc; text-decoration: none;">RK2GROOOOVY [CLUB RKO MINI MIX #2]</a></div>`
-    },
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/wintry-warmth-vol-i',
-      embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1707664320&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/mgf221" title="RKO" target="_blank" style="color: #cccccc; text-decoration: none;">RKO</a> · <a href="https://soundcloud.com/mgf221/wintry-warmth-vol-i" title="WINTRY WARMTH VOL. I" target="_blank" style="color: #cccccc; text-decoration: none;">WINTRY WARMTH VOL. I</a></div>`
-    },
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/friendsflings-vol-2',
-      embedHtml: `<iframe width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1531833634&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href=\"https://soundcloud.com/mgf221\" title=\"RKO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RKO</a> · <a href=\"https://soundcloud.com/mgf221/friendsflings-vol-2\" title=\"FRIENDS&amp;FLINGS VOL. 2\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">FRIENDS&amp;FLINGS VOL. 2</a></div>`
-    },
-    {
-      soundcloud: 'https://soundcloud.com/mgf221/sets/rated-rko-radio',
-      embedHtml: `<iframe width=\"100%\" height=\"450\" scrolling=\"no\" frameborder=\"no\" allow=\"autoplay\" src=\"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1500834493&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true\"></iframe><div style=\"font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;\"><a href=\"https://soundcloud.com/mgf221\" title=\"RKO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RKO</a> · <a href=\"https://soundcloud.com/mgf221/sets/rated-rko-radio\" title=\"RATED RKO RADIO\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">RATED RKO RADIO</a></div>`
-    },
-  ];
   const mixesPerView = 1;
   const maxMusicIndex = Math.max(0, musicMixes.length - mixesPerView);
 
@@ -516,18 +631,46 @@ export default function Home() {
               </Box>
               {/* Right: Photo */}
               <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: 320 }}>
-                <img
-                  src={mode === 'dark' ? "/images/IMG_8060.JPG" : "/images/IMG_8105.JPG"}
-                  alt="Rodney Okyere"
-                  style={{
+                <Box
+                  sx={{
+                    position: 'relative',
                     width: 420,
                     height: 540,
-                    objectFit: 'cover',
                     borderRadius: 24,
                     boxShadow: '0 12px 48px rgba(0,0,0,0.14)',
                     background: '#eee',
+                    overflow: 'hidden',
                   }}
-                />
+                >
+                  <img
+                    src="/images/IMG_8060.JPG"
+                    alt="Rodney Okyere Dark"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      opacity: mode === 'dark' ? 1 : 0,
+                      transition: 'opacity 0.5s ease-in-out',
+                    }}
+                  />
+                  <img
+                    src="/images/IMG_8105.JPG"
+                    alt="Rodney Okyere Light"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      opacity: mode === 'light' ? 1 : 0,
+                      transition: 'opacity 0.5s ease-in-out',
+                    }}
+                  />
+                </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
                   <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 400, mr: 1, fontSize: '1.25rem' }}>
                     based in
@@ -944,103 +1087,14 @@ export default function Home() {
         </Box>
 
         {/* Slide: Music */}
-        <Box id="music-section" sx={{ width: '100%', minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, pb: 8, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
-          <Box sx={{ width: '100%', maxWidth: 1200, px: { xs: 2, md: 6 }, py: { xs: 6, md: 10 }, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-            <Typography variant="h2" sx={{ fontWeight: 700, color: 'text.primary', mb: 2, textAlign: 'center', width: '100%' }}>
-              Music
-            </Typography>
-            <Typography variant="subtitle1" sx={{ color: 'text.primary', fontWeight: 500, mb: 2, textAlign: 'center', width: '100%', fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
-              From curating mixes to being an on-air FM DJ for WUVT-FM 90.7 Blacksburg, I'm reinventing MY sound everyday! Feel free to check out my latest mixes as well as my archive of WUVT sets!
-            </Typography>
-            <Box sx={{ width: '100%', maxWidth: '100vw', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
-              {/* Left Arrow Column */}
-              <Box sx={{ width: { xs: 40, md: 64 }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                {musicIndex > 0 && (
-                  <IconButton
-                    onClick={handleMusicPrev}
-                    sx={{
-                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.85)' : '#f0f0f0',
-                      borderRadius: 999,
-                      boxShadow: '0 2px 8px 0 rgba(0,0,0,0.18)',
-                      width: 48,
-                      height: 48,
-                      color: theme.palette.primary.main,
-                      border: theme.palette.mode === 'light' ? `1px solid ${theme.palette.divider}` : 'none',
-                      '&:hover': { bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.95)' : '#e0e0e0' },
-                    }}
-                  >
-                    <ChevronLeftIcon fontSize="large" />
-                  </IconButton>
-                )}
-              </Box>
-              {/* Carousel Column */}
-              <Box
-                ref={musicCarouselRef}
-                onScroll={handleMusicCarouselScroll}
-                sx={{
-                  width: '100%',
-                  maxWidth: 'calc(100vw - 128px)',
-                  height: '60vh',
-                  maxHeight: 500,
-                  overflowX: 'auto',
-                  overflowY: 'hidden',
-                  scrollSnapType: 'x mandatory',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'stretch',
-                  gap: 4,
-                  pb: 2,
-                  boxSizing: 'border-box',
-                  scrollbarWidth: 'none',
-                  '&::-webkit-scrollbar': { display: 'none' },
-                }}
-              >
-                {musicMixes.map((mix, idx) => (
-                  <Paper key={idx} elevation={2} role="music-card" sx={{
-                    borderRadius: 4,
-                    p: 0,
-                    display: 'block',
-                    width: { xs: '95vw', sm: '80vw', md: 600 },
-                    maxWidth: 600,
-                    minWidth: 320,
-                    scrollSnapAlign: 'center',
-                    overflow: 'hidden',
-                    boxSizing: 'border-box',
-                    bgcolor: 'rgba(255,255,255,0.08)',
-                    textAlign: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    {mix.embedHtml ? (
-                      <Box sx={{ width: '100%' }} dangerouslySetInnerHTML={{ __html: mix.embedHtml }} />
-                    ) : (
-                      <iframe width="100%" height="450" scrolling="no" frameBorder="no" allow="autoplay" src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(mix.soundcloud)}&color=%23ff5500&auto_play=false`} />
-                    )}
-                  </Paper>
-                ))}
-              </Box>
-              {/* Right Arrow Column */}
-              {!isMusicAtEnd && (
-                <Box sx={{ width: { xs: 40, md: 64 }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                  <IconButton
-                    onClick={handleMusicNext}
-                    sx={{
-                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.85)' : '#f0f0f0',
-                      borderRadius: 999,
-                      boxShadow: '0 2px 8px 0 rgba(0,0,0,0.18)',
-                      width: 48,
-                      height: 48,
-                      color: theme.palette.primary.main,
-                      border: theme.palette.mode === 'light' ? `1px solid ${theme.palette.divider}` : 'none',
-                      '&:hover': { bgcolor: theme.palette.mode === 'dark' ? 'rgba(30,30,30,0.95)' : '#e0e0e0' },
-                    }}
-                  >
-                    <ChevronRightIcon fontSize="large" />
-                  </IconButton>
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </Box>
+        <MusicSection
+          musicCarouselRef={musicCarouselRef}
+          musicIndex={musicIndex}
+          isMusicAtEnd={isMusicAtEnd}
+          handleMusicPrev={handleMusicPrev}
+          handleMusicNext={handleMusicNext}
+          handleMusicCarouselScroll={handleMusicCarouselScroll}
+        />
 
         {/* Slide 4: Let's Connect! */}
         <Box id="contact-section" sx={{ width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', pt: 10, bgcolor: 'background.default' }}>
