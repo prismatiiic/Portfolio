@@ -55,10 +55,6 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
-      - name: List contents of output directory for debugging
-        run: ls -R
-        working-directory: ./frontend/out
-
       # Step 6: Upload the artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
