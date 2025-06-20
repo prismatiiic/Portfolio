@@ -916,7 +916,8 @@ export default function Home() {
                         <Paper elevation={2} className="project-card" sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', md: '100%' },
+                          minHeight: { xs: '480px', md: 'auto' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
@@ -1000,6 +1001,7 @@ export default function Home() {
                     width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
                     height: { xs: 'auto', md: 500 },
+                    minHeight: { xs: '480px', md: 'auto' },
                     scrollSnapAlign: 'center',
                     overflow: 'hidden',
                     flex: '0 0 auto',
