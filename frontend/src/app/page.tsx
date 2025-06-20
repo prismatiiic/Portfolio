@@ -880,7 +880,7 @@ export default function Home() {
             )}
             <Box ref={carouselRef} onScroll={handleCarouselScroll} sx={{
               width: '100%',
-              maxWidth: { xs: 'calc(100vw - 88px)', md: 'calc(100vw - 64px)' },
+              maxWidth: { xs: 'calc(100vw - 48px)', md: 'calc(100vw - 64px)' },
               height: '60vh',
               maxHeight: 500,
               overflowX: 'auto',
@@ -891,6 +891,8 @@ export default function Home() {
               alignItems: 'stretch',
               gap: 4,
               pb: 2,
+              px: { xs: 2, md: 0 },
+              mx: 'auto',
               boxSizing: 'border-box',
               scrollbarWidth: 'none',
               '&::-webkit-scrollbar': { display: 'none' },
@@ -899,7 +901,7 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '90vw', sm: '70vw', md: 900 }, maxWidth: 900, height: '60vh', maxHeight: 500, minHeight: 400, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: '60vh', maxHeight: 500, minHeight: 400, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
@@ -995,7 +997,7 @@ export default function Home() {
                     p: 0,
                     display: 'flex',
                     flexDirection: { xs: 'column', sm: 'row' },
-                    width: { xs: '90vw', sm: '70vw', md: 900 },
+                    width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
                     height: '60vh',
                     maxHeight: 500,
