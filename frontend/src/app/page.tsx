@@ -906,7 +906,7 @@ export default function Home() {
                         sx={{
                           position: 'relative',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', md: '100%' },
                           transformStyle: 'preserve-3d',
                           transition: 'transform 0.7s cubic-bezier(.4,1.3,.6,1)',
                           transform: flippedCards[idx] ? 'rotateY(180deg)' : 'none',
@@ -916,7 +916,7 @@ export default function Home() {
                         <Paper elevation={2} className="project-card" sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', md: '100%' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
@@ -927,7 +927,7 @@ export default function Home() {
                           textAlign: 'left',
                           justifyContent: 'center',
                         }}>
-                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
+                          <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                               {project.tags.map((tag, i) => (
@@ -957,7 +957,7 @@ export default function Home() {
                         <Paper elevation={2} sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: { xs: 'auto', sm: '100%' },
+                          height: { xs: 'auto', md: '100%' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
@@ -1009,18 +1009,16 @@ export default function Home() {
                     alignItems: 'center',
                   }}>
                     {/* Left: Textual content */}
-                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column', minHeight: { xs: 220, md: 'auto' } }}>
+                    <Box sx={{ flex: { xs: 'none', md: 1 }, width: '100%', p: 3, display: 'flex', flexDirection: 'column' }}>
                       <Typography variant="h5" sx={{ fontWeight: 600, maxWidth: '100%', whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.2 }}>{project.title}</Typography>
                       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
                         {project.tags.map((tag, i) => (
                           <Chip key={i} label={tag} size="small" sx={{ bgcolor: accentBg, color: theme.palette.primary.main, fontWeight: 500 }} />
                         ))}
                       </Box>
-                      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        {project.description.split('\n').map((para, idx) => (
-                          <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
-                        ))}
-                      </Box>
+                      {project.description.split('\n').map((para, idx) => (
+                        <Typography key={idx} variant="body1" sx={{ color: 'text.primary', mt: idx === 0 ? 2 : 1 }}>{para}</Typography>
+                      ))}
                       <Box sx={{ marginTop: 'auto', paddingTop: 2, display: 'flex', justifyContent: 'flex-end' }}>
                         <Button href={project.link} sx={{ color: theme.palette.primary.main, fontWeight: 600 }}>
                           Learn More
