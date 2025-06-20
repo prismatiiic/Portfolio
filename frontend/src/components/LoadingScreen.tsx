@@ -14,8 +14,49 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const [currentText, setCurrentText] = useState('');
   const fullText = 'YTYKM';
   const [isComplete, setIsComplete] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [totalImages, setTotalImages] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const hasPlayedRef = useRef(false);
+  const textCompleteRef = useRef(false);
+
+  // Critical images to preload
+  const criticalImages = [
+    `${basePath}/images/IMG_8060.JPG`,
+    `${basePath}/images/IMG_8105.JPG`,
+    `${basePath}/gifs/PAER.gif`,
+    `${basePath}/gifs/Disc.gif`,
+    `${basePath}/gifs/projectfellowshipCROPPED.gif`,
+    `${basePath}/images/MusicDiaryLogo.png`,
+    `${basePath}/images/DiscLogo.png`,
+    `${basePath}/images/ProjectFellowshipLogowoTag.png`,
+    `${basePath}/images/RVPortfolio.png`,
+    `${basePath}/images/DiscordLogo.png`,
+  ];
+
+  useEffect(() => {
+    // Preload all critical images
+    setTotalImages(criticalImages.length);
+    
+    const loadImage = (src: string): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          setImagesLoaded(prev => prev + 1);
+          resolve();
+        };
+        img.onerror = () => {
+          // Still count as loaded to prevent infinite waiting
+          setImagesLoaded(prev => prev + 1);
+          resolve();
+        };
+        img.src = src;
+      });
+    };
+
+    // Load all images in parallel
+    Promise.all(criticalImages.map(loadImage));
+  }, []);
 
   useEffect(() => {
     // Play DJ tag sound after a 2 second delay, only once
@@ -26,6 +67,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         hasPlayedRef.current = true;
       }
     }, 2000);
+
     let currentIndex = 0;
     const interval = setInterval(() => {
       if (currentIndex < fullText.length) {
@@ -33,11 +75,9 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         currentIndex++;
       } else {
         clearInterval(interval);
-        // Wait for 2 seconds after text is complete before fading out
-        setTimeout(() => {
-          setIsComplete(true);
-          setTimeout(onLoadingComplete, 500);
-        }, 2000);
+        textCompleteRef.current = true;
+        // Check if we can complete loading
+        checkCompletion();
       }
     }, 200);
 
@@ -45,7 +85,25 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
       clearInterval(interval);
       clearTimeout(audioTimeout);
     };
-  }, [fullText, onLoadingComplete]);
+  }, [fullText]);
+
+  const checkCompletion = () => {
+    // Only complete if both text is done AND images are loaded
+    if (textCompleteRef.current && imagesLoaded >= totalImages) {
+      // Wait for 1 second after everything is complete before fading out
+      setTimeout(() => {
+        setIsComplete(true);
+        setTimeout(onLoadingComplete, 500);
+      }, 1000);
+    }
+  };
+
+  // Check completion whenever images load
+  useEffect(() => {
+    if (textCompleteRef.current) {
+      checkCompletion();
+    }
+  }, [imagesLoaded, totalImages]);
 
   return (
     <>

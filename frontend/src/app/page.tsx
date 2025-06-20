@@ -260,6 +260,7 @@ export default function Home() {
   const gap = isMobile ? 24 : 64;
   const padding = isMobile ? 16 : 32;
   const [tabValue, setTabValue] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const accentBg = useMemo(() => {
     const color = theme.palette.primary.main;
     const r = parseInt(color.slice(1, 3), 16);
@@ -640,7 +641,7 @@ export default function Home() {
                     height: 540,
                     borderRadius: 24,
                     boxShadow: '0 12px 48px rgba(0,0,0,0.14)',
-                    background: '#eee',
+                    background: 'transparent',
                     overflow: 'hidden',
                   }}
                 >
@@ -654,9 +655,10 @@ export default function Home() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      opacity: mode === 'dark' ? 1 : 0,
-                      transition: 'opacity 0.5s ease-in-out',
+                      opacity: mode === 'dark' && imagesLoaded ? 1 : 0,
+                      transition: 'opacity 0.7s ease-in-out',
                     }}
+                    onLoad={() => setImagesLoaded(true)}
                   />
                   <img
                     src={`${basePath}/images/IMG_8105.JPG`}
@@ -668,9 +670,10 @@ export default function Home() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      opacity: mode === 'light' ? 1 : 0,
-                      transition: 'opacity 0.5s ease-in-out',
+                      opacity: mode === 'light' && imagesLoaded ? 1 : 0,
+                      transition: 'opacity 0.7s ease-in-out',
                     }}
+                    onLoad={() => setImagesLoaded(true)}
                   />
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
