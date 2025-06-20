@@ -47,7 +47,7 @@ const projects = [
     title: 'PAER: Peer-AI Editing Repository',
     description: "Collaborative writing in academia is already challenging due to the difficulty of sharing context about document changes, and isolated AI usage by each member further amplifies this issue.\n We introduce PAER — our AI-Peer Editing Repository designed to streamline collaborative writing.",
     tags: ['AI Writing Assistant', 'Collaborative Writing', 'Full-Stack Web App'],
-    image: `${basePath}/images/manq-thumb.jpg`,
+    image: '',
     videoPreview: `${basePath}/gifs/PAER.gif`,
     link: '#',
   },
