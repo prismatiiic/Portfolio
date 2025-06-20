@@ -881,8 +881,8 @@ export default function Home() {
             <Box ref={carouselRef} onScroll={handleCarouselScroll} sx={{
               width: '100%',
               maxWidth: { xs: 'calc(100vw - 48px)', md: 'calc(100vw - 64px)' },
-              height: { xs: 'auto', sm: '60vh' },
-              maxHeight: { xs: 'none', sm: 500 },
+              height: { xs: '600px', sm: '60vh' },
+              maxHeight: { xs: '600px', sm: 500 },
               overflowX: 'auto',
               overflowY: { xs: 'visible', sm: 'hidden' },
               scrollSnapType: 'x mandatory',
@@ -901,12 +901,12 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: 'auto', md: 500 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: '480px', md: 500 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
                           width: '100%',
-                          height: { xs: 'auto', md: '100%' },
+                          height: '100%',
                           transformStyle: 'preserve-3d',
                           transition: 'transform 0.7s cubic-bezier(.4,1.3,.6,1)',
                           transform: flippedCards[idx] ? 'rotateY(180deg)' : 'none',
