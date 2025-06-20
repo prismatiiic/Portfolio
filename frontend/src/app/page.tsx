@@ -881,8 +881,8 @@ export default function Home() {
             <Box ref={carouselRef} onScroll={handleCarouselScroll} sx={{
               width: '100%',
               maxWidth: { xs: 'calc(100vw - 48px)', md: 'calc(100vw - 64px)' },
-              height: { xs: '600px', sm: '60vh' },
-              maxHeight: { xs: '600px', sm: 500 },
+              height: { xs: '700px', sm: '60vh' },
+              maxHeight: { xs: '700px', sm: 500 },
               overflowX: 'auto',
               overflowY: { xs: 'visible', sm: 'hidden' },
               scrollSnapType: 'x mandatory',
@@ -901,7 +901,7 @@ export default function Home() {
                 const hasVideo = projectVideos[project.title];
                 if (hasVideo) {
                   return (
-                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: '480px', md: 500 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
+                    <Box key={idx} sx={{ perspective: 1200, width: { xs: '100%', sm: '70vw', md: 900 }, maxWidth: 900, height: { xs: '650px', md: 500 }, flex: '0 0 auto', scrollSnapAlign: 'center' }}>
                       <Box
                         sx={{
                           position: 'relative',
@@ -917,7 +917,7 @@ export default function Home() {
                           position: 'absolute',
                           width: '100%',
                           height: { xs: 'auto', md: '100%' },
-                          minHeight: { xs: '480px', md: 'auto' },
+                          minHeight: { xs: '650px', md: 'auto' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
@@ -1001,7 +1001,7 @@ export default function Home() {
                     width: { xs: '100%', sm: '70vw', md: 900 },
                     maxWidth: 900,
                     height: { xs: 'auto', md: 500 },
-                    minHeight: { xs: '480px', md: 'auto' },
+                    minHeight: { xs: '650px', md: 'auto' },
                     scrollSnapAlign: 'center',
                     overflow: 'hidden',
                     flex: '0 0 auto',
