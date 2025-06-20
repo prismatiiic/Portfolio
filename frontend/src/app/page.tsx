@@ -906,7 +906,7 @@ export default function Home() {
                         sx={{
                           position: 'relative',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', sm: '100%' },
                           transformStyle: 'preserve-3d',
                           transition: 'transform 0.7s cubic-bezier(.4,1.3,.6,1)',
                           transform: flippedCards[idx] ? 'rotateY(180deg)' : 'none',
@@ -916,7 +916,7 @@ export default function Home() {
                         <Paper elevation={2} className="project-card" sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', sm: '100%' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
@@ -955,7 +955,7 @@ export default function Home() {
                         <Paper elevation={2} sx={{
                           position: 'absolute',
                           width: '100%',
-                          height: '100%',
+                          height: { xs: 'auto', sm: '100%' },
                           backfaceVisibility: 'hidden',
                           borderRadius: 4,
                           p: 0,
