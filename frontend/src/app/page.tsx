@@ -1158,8 +1158,8 @@ export default function Home() {
                 </Box>
                 <Box>
                   <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'text.primary' }}>Resumes</Typography>
+                  <a href={`${basePath}/resumes/SoftwareResumeREVAMPED.pdf`} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}>Software Developer Resume</a>
                   <a href={`${basePath}/resumes/UserResearcherResume.pdf`} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}>User Researcher Resume</a>
-                  <a href={`${basePath}/resumes/SoftwareResume.pdf`} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 500, fontSize: '1.1rem', textDecoration: 'none', display: 'block' }}>Software Developer Resume</a>
                 </Box>
               </Paper>
               {/* Email Card */}
